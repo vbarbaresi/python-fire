@@ -90,6 +90,12 @@ class WithVarArgs(object):
     return arg1, arg2, varargs, kwargs
 
 
+class LruCacheDecorator(object):
+    from functools import lru_cache
+    @lru_cache()
+    def example8(self, arg1):
+        return arg1
+
 class FireDecoratorsTest(testutils.BaseTestCase):
 
   def testSetParseFnsNamedArgs(self):
@@ -169,6 +175,9 @@ class FireDecoratorsTest(testutils.BaseTestCase):
                   command=['example7', '1', '--arg2=2', '3', '4', '--kwarg=5']),
         ('1', '2', ('3', '4'), {'kwarg': '5'}))
 
+
+  def testLruCacheDecorator(self):
+    self.assertEqual(core.Fire(LruCacheDecorator, command=['example8', 'foo']), 'foo')
 
 if __name__ == '__main__':
   testutils.main()
